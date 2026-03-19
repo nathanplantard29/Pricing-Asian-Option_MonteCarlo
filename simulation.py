@@ -6,9 +6,12 @@ def generate_paths(S, r, sigma, T, N, n_simu):
 # on découpe les T années par des N petits morceaux (par convention N=252 jours de bourses en 1 an)
     dt = T/N        
 
-# on créé une matrice de N lignes et n_simu colonnes remplit de variables aléatoire tiré d'une loi normale centrée réduite 
-    Z = np.random.standard_normal((N, n_simu))     
+    half_simu = n_simu // 2
 
+# on créé une matrice de N lignes et n_simu colonnes remplit de variables aléatoire tiré d'une loi normale centrée réduite 
+    Z_half= np.random.standard_normal((N, half_simu))     
+
+    Z = np.hstack([Z_half, -Z_half])
 # on donne la formule du Mouvement Brownien Géométrique.
     daily_returns = np.exp((r-0.5*sigma**2)*dt + sigma*np.sqrt(dt)*Z)
 
